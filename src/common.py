@@ -8,7 +8,7 @@ APPOINTMENT_URL = r"https://www.impfportal-niedersachsen.de/portal/#/appointment
 
 ZIP_REGEX = r"^(19|21|26|27|28|29|30|31|34|37|38|48|49)([0-9]{3})$"
 BIRTHDATE_REGEX = r"^[0-3]?[0-9]\.[0-3]?[0-9]\.(?:19|20)?[0-9]{2}$"
-NUMBER_REGEX = r"^[0-9]*(?:\.[0-9])?$"
+NUMBER_REGEX = r"^-?[0-9]*(?:\.[0-9])?$"
 GROUP_SIZE_REGEX = r"^[2-9]|1[0-5]$"
 BOOL_REGEX = r"(?i)^(?:true)|(?:false)$"
 USER_AGENT_REGEX = r"^.*$"
@@ -54,7 +54,7 @@ GOOD_PLZ = ['19', '21', '26', '27', '28', '29',
             '30', '31', '34', '37', '38', '48', '49']
 
 
-def sleep(time_in_s: int, jitter: int = 0) -> None:
+def sleep(time_in_s: int, jitter: float = 0) -> None:
     """sleeps for time and random jitter; prints output"""
     time_to_wait = time_in_s + random.random()*jitter
     start = datetime.now()
