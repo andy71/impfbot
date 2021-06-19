@@ -1,6 +1,8 @@
 
 """api wrapper for the lower saxony vaccination portal"""
 import logging
+import time
+import json
 
 from requests.sessions import Session
 from requests.exceptions import ConnectionError as RequestConnectionError
@@ -19,7 +21,7 @@ def fetch_api(
         group_size: int = None,
         max_retries: int = 10,
         sleep_after_error: int = 30,
-        jitter: int = 5,
+        jitter: float = 5,
         user_agent: str = 'python'
     ) -> any:
     """fetches the api with ip ban avoidance"""
@@ -39,6 +41,9 @@ def fetch_api(
         try:
             session = Session()
             with session.get(url=url, headers=headers, timeout=10) as data:
+                fileprefix = time.strftime("%H-%M-%S")
+                with open('/mnt/lvm_daten/tmp/impfbot/' + fileprefix + ".json", 'w') as jsonfile:
+                    jsonfile.write(json.dumps(json.loads(data.text), indent=2, sort_keys=False, ensure_ascii=False).encode('utf8').decode('utf8'))
                 return data.json()["resultList"]
         except RequestConnectionError as ex:
             raise ex
